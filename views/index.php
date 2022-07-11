@@ -24,14 +24,18 @@
 
             $json = new JSON('to-do.json');
             $tasks = $json->getRows();
-            foreach ($tasks as $taskName => $task) {
+
+            if ($tasks === false)
+                $tasks = [];
+
+            foreach ($tasks as $taskName => $task):
                 ?>
                 <form id="form-update" action="/to-do/to-do/update" method="post">
                     <br>
 
                     <div class="row">
                         <div class="col-12" style="height: 30px">
-                            <input form="form-update" class="" name="<?php echo $taskName ?>"
+                            <input id="todo" form="form-update" class="" name="<?php echo $taskName ?>"
                                    type="checkbox"<?php if ($task['completed']) echo "checked" ?>>
                             <?php
                             echo $taskName;
@@ -43,13 +47,13 @@
 
                 </form>
 
-                <?php
-            }
+            <?php
+            endforeach;
             ?>
         </div>
         <div class="col-6">
             <?php
-            foreach ($tasks as $taskName => $task) {
+            foreach ($tasks as $taskName => $task) :
                 ?>
                 <br>
                 <div class="row">
@@ -64,19 +68,15 @@
                 </div>
 
 
-
-                <?php
-            }
+            <?php
+            endforeach;
             ?>
 
         </div>
     </div>
 
 
-
-
     <button form="form-update" type="submit" class="btn btn-primary m-3">update</button>
-
 
 
 </div>
@@ -84,7 +84,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+</script>
 
 </body>
 </html>

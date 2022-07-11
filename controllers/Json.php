@@ -19,19 +19,13 @@ class Json
 
     public function insert()
     {
-        $json = ['completed' => false];
-        $json = json_encode(array($_POST['task'] => $json), JSON_FORCE_OBJECT);
-        $json = json_decode($json, true);
-
         $inp = file_get_contents($this->jsonFile);
         $tempArray = json_decode($inp, true);
 
+        $tempArray[$_POST['task']] = ['completed' => false];
+        file_put_contents($this->jsonFile, json_encode($tempArray, JSON_PRETTY_PRINT));
 
-        $tempArray = array_merge($tempArray, $json);
-        $jsonData = json_encode($tempArray);
-        file_put_contents($this->jsonFile, $jsonData);
-
-        require __DIR__ . "/../views/index.php";
+        header('Location: /to-do/to-do/');
     }
 
     public function update()
@@ -40,7 +34,7 @@ class Json
         $jsonArray = json_decode($inp, true);
 
         foreach ($jsonArray as $jsonName => $jsonValue) {
-            if (isset($_POST[$jsonName]))
+            if (isset($_POST[$jsonName]))  // if checkbox is set change json value to true, if not set change it to false.
                 $jsonArray[$jsonName]['completed'] = true;
             else
                 $jsonArray[$jsonName]['completed'] = false;
@@ -50,7 +44,7 @@ class Json
         $jsonData = json_encode($jsonArray);
         file_put_contents($this->jsonFile, $jsonData);
 
-        require __DIR__ . "/../views/index.php";
+        header('Location: /to-do/to-do/');
     }
 
     public function delete()
@@ -68,6 +62,6 @@ class Json
         }
 
         $delete = file_put_contents($this->jsonFile, json_encode($data));
-        require __DIR__ . '/../views/index.php';
+        header('Location: /to-do/to-do/');
     }
 }
