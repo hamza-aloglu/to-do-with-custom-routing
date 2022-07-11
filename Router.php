@@ -24,7 +24,7 @@ class Router
         return $this->register('post', $route, $action);
     }
 
-    public function resolve(string $requestUri, string $reqMethod)
+    public function resolve(string $requestUri, string $reqMethod, $classArgs = null)
     {
         $route =  explode('?', $requestUri)[0];
         $action = $this->routes[$reqMethod][$route] ?? null;
@@ -39,14 +39,14 @@ class Router
             [$class, $method] = $action;
             if (class_exists($class))
             {
-                $class = new $class(__DIR__.'/to-do.json');
+                $class = new $class($classArgs);
                 if (method_exists($class, $method))
                 {
                     return call_user_func_array([$class, $method], []);
                 }
             }
         }
-        throw new \Exception();
+        throw new \Exception('cannot be resolved.');
 
     }
 }
