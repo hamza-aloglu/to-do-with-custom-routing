@@ -46,7 +46,7 @@ class Router
                 }
             }
         }
-        throw new \Exception('cannot be resolved.');
+        throw new \Exception('404 NOT FOUND.');
 
     }
 }

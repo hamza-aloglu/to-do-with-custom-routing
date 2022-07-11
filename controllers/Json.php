@@ -26,7 +26,6 @@ class Json
         $inp = file_get_contents($this->jsonFile);
         $tempArray = json_decode($inp, true);
 
-        $tempArray = $this->update($tempArray);
 
         $tempArray = array_merge($tempArray, $json);
         $jsonData = json_encode($tempArray);
@@ -35,8 +34,11 @@ class Json
         require __DIR__ . "/../views/index.php";
     }
 
-    private function update($jsonArray): array
+    public function update()
     {
+        $inp = file_get_contents($this->jsonFile);
+        $jsonArray = json_decode($inp, true);
+
         foreach ($jsonArray as $jsonName => $jsonValue) {
             if (isset($_POST[$jsonName]))
                 $jsonArray[$jsonName]['completed'] = true;
@@ -45,11 +47,15 @@ class Json
 
         }
 
-        return $jsonArray;
+        $jsonData = json_encode($jsonArray);
+        file_put_contents($this->jsonFile, $jsonData);
+
+        require __DIR__ . "/../views/index.php";
     }
 
     public function delete()
     {
+
         $jsonData = file_get_contents($this->jsonFile);
         $data = json_decode($jsonData, true);
 

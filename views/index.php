@@ -14,37 +14,71 @@
 <div class="container">
     <form action="/to-do/to-do/insert" method="post" id="form-1">
         <input form="form-1" class="m-2" type="text" placeholder="enter your to-do" name="task">
-        <br>
-        <?php
-
-        use todo\controllers\Json;
-
-        $json = new JSON('to-do.json');
-        $tasks = $json->getRows();
-        foreach ($tasks as $taskName => $task) {
-            ?>
-            <div class="row">
-                <div class="col-3">
-                    <input form="form-1" class="" name="<?php echo $taskName ?>"
-                           type="checkbox"<?php if ($task['completed']) echo "checked" ?>>
-                    <?php
-                    echo $taskName;
-                    ?>
-                </div>
-
-
-                <div class="col-3">
-                    <form id="form-delete" method="post" style="display: inline-block"
-                          action="/to-do/to-do/delete?task=<?php echo $taskName ?>">
-                        <button form="form-delete" type="submit" class="btn btn-outline-primary mb-2">delete</button>
-                    </form>
-                    <br>
-                </div>
-            </div>
-            <?php
-        }
-        ?>
     </form>
+
+    <div class="row">
+        <div class="col-6">
+            <?php
+
+            use todo\controllers\Json;
+
+            $json = new JSON('to-do.json');
+            $tasks = $json->getRows();
+            foreach ($tasks as $taskName => $task) {
+                ?>
+                <form id="form-update" action="/to-do/to-do/update" method="post">
+                    <br>
+
+                    <div class="row">
+                        <div class="col-12" style="height: 30px">
+                            <input form="form-update" class="" name="<?php echo $taskName ?>"
+                                   type="checkbox"<?php if ($task['completed']) echo "checked" ?>>
+                            <?php
+                            echo $taskName;
+                            ?>
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+                <?php
+            }
+            ?>
+        </div>
+        <div class="col-6">
+            <?php
+            foreach ($tasks as $taskName => $task) {
+                ?>
+                <br>
+                <div class="row">
+                    <div class="col-12" style="height: 30px">
+                        <form method="post" style="display: inline-block"
+                              action="/to-do/to-do/delete?task=<?php echo $taskName ?>">
+                            <button type="submit" class="btn btn-outline-primary">delete</button>
+                        </form>
+                        <br>
+                    </div>
+
+                </div>
+
+
+
+                <?php
+            }
+            ?>
+
+        </div>
+    </div>
+
+
+
+
+    <button form="form-update" type="submit" class="btn btn-primary m-3">update</button>
+
+
+
 </div>
 
 
